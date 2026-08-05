@@ -1,14 +1,36 @@
 export default function Header() {
+  const today = new Date();
+
+  const todayDate = today.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  const hours = today.getHours();
+  const min = today.getMinutes();
+  let greetingMsg = ' World!';
+
+  //   morning |  5:30-11:59
+  // afternoon | 12:00-17:59
+  //   evening | 18:00-05:29
+  if (hours >= 5 && ((hours === 5 && min >= 30) || (hours > 5 && hours < 12))) {
+    greetingMsg = 'Good Morning,' + greetingMsg;
+  } else if (hours >= 12 && hours < 18) {
+    greetingMsg = 'Good Afternoon' + greetingMsg;
+  } else if (hours >= 18 || hours < 5) {
+    greetingMsg = 'Good Evening' + greetingMsg;
+  }
   return (
     <header className='border-b border-neutral-800 bg-gradient-to-b from-neutral-950 via-neutral-900/80 to-transparent'>
       <div className='max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between'>
         <div className='space-y-4'>
           <p className='text-xs font-semibold uppercase tracking-[0.4em] text-blue-400'>Vault overview</p>
           <div className='flex flex-col gap-3 md:flex-row md:items-center'>
-            <h1 className='text-4xl font-semibold tracking-tight'>Good Morning, World!</h1>
+            <h1 className='text-4xl font-semibold tracking-tight'>{greetingMsg}</h1>
             <span className='inline-flex items-center gap-2 rounded-full border border-neutral-800/80 bg-neutral-900/70 px-4 py-1 text-xs font-medium text-neutral-300'>
               <span className='h-2 w-2 rounded-full bg-emerald-400'></span>
-              Monday, Nov 10
+              {todayDate}
             </span>
           </div>
           <p className='text-sm text-neutral-400 max-w-2xl'>
