@@ -1,4 +1,30 @@
-export default function NewBookmark() {
+import { useState } from 'react';
+
+export default function NewBookmark({ onAddBookMark }) {
+  const defaultState = {
+    web_url: '',
+    favicon_color: '#3b82f6',
+    category: '',
+    user_name: '',
+    password: ''
+  };
+
+  const [bookMark, setBookMark] = useState(defaultState);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setBookMark({
+      ...bookMark,
+      [name]: value
+    });
+  };
+
+  const handleReset = () => {
+    setBookMark(defaultState);
+  };
+
   return (
     <div className='max-w-7xl mx-auto mt-8 px-4'>
       <form className='mb-10 rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900/70 to-neutral-800/40 p-8 shadow-2xl shadow-black/40 backdrop-blur'>
@@ -16,6 +42,9 @@ export default function NewBookmark() {
               <input
                 type='url'
                 placeholder='https://example.com'
+                name='web_url'
+                value={bookMark.web_url}
+                onChange={handleChange}
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
               <span className='text-xs text-neutral-500'>Include https:// for best results.</span>
@@ -30,7 +59,9 @@ export default function NewBookmark() {
                 </div>
                 <input
                   type='color'
-                  defaultValue='#3b82f6'
+                  name='favicon_color'
+                  value={bookMark.favicon_color}
+                  onChange={handleChange}
                   className='h-12 w-12 cursor-pointer rounded-full border border-neutral-700 bg-neutral-800 p-1 shadow-inner shadow-black/50'
                 />
               </div>
@@ -45,7 +76,11 @@ export default function NewBookmark() {
             {/* <!-- Category Select --> */}
             <label className='flex flex-col gap-3 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 text-sm transition focus-within:border-blue-500 focus-within:bg-neutral-900 focus-within:shadow-lg focus-within:shadow-blue-500/10'>
               <span className='text-xs font-semibold uppercase tracking-wider text-neutral-400'>Category</span>
-              <select className='w-full bg-transparent text-base text-white outline-none'>
+              <select
+                className='w-full bg-transparent text-base text-white outline-none'
+                name='category'
+                value={bookMark.category}
+                onChange={handleChange}>
                 <option className='bg-neutral-900 text-white'>Select category</option>
                 <option className='bg-neutral-900 text-white'>Social</option>
                 <option className='bg-neutral-900 text-white'>Video</option>
@@ -66,6 +101,9 @@ export default function NewBookmark() {
               <span className='text-xs font-semibold uppercase tracking-wider text-neutral-400'>Username</span>
               <input
                 type='text'
+                name='user_name'
+                value={bookMark.user_name}
+                onChange={handleChange}
                 placeholder='Enter username'
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
@@ -77,6 +115,9 @@ export default function NewBookmark() {
               <span className='text-xs font-semibold uppercase tracking-wider text-neutral-400'>Password</span>
               <input
                 type='password'
+                name='password'
+                value={bookMark.password}
+                onChange={handleChange}
                 placeholder='Enter password'
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
@@ -90,11 +131,16 @@ export default function NewBookmark() {
           <div className='flex flex-1 justify-end gap-3'>
             <button
               type='reset'
+              onClick={handleReset}
               className='w-full rounded-full border border-neutral-700 px-6 py-3 text-sm font-semibold text-neutral-200 transition hover:border-neutral-500 hover:text-white md:w-auto'>
               Clear
             </button>
             <button
               type='submit'
+              onClick={(e) => {
+                e.preventDefault();
+                onAddBookMark(bookMark);
+              }}
               className='w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 md:w-auto'>
               Add Bookmark
             </button>

@@ -3,10 +3,14 @@ import PasswordCards from './PasswordCards';
 import SearchAndSorting from './SearchAndSorting';
 
 export default function BookmarkBoard() {
+  const handleAddBookMark = (newBookMark) => {
+    console.log('👀 ~ handleAddBookMark ~ newBookMark:', newBookMark);
+  };
+
   return (
     <>
       {/* new book mark form */}
-      <NewBookmark />
+      <NewBookmark onAddBookMark={handleAddBookMark} />
 
       {/* main content */}
       <main className='p-8'>
