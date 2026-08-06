@@ -27,8 +27,6 @@ export default function PasswordCards({ bookMarks }) {
 
     const companyName = url.split('.')[0];
 
-    console.log(researvedIcon[urlObj.host]);
-
     let icon = Object.keys(researvedIcon).includes(url) ? researvedIcon[url] : companyName.slice(0, 2);
     return {
       url,
@@ -41,11 +39,18 @@ export default function PasswordCards({ bookMarks }) {
     setRevealedId((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   }
 
+  if (bookMarks.length === 0) {
+    return (
+      <div className='flex h-96 items-center justify-center rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-900/80 to-neutral-900/40 p-6 shadow-2xl shadow-black/40 backdrop-blur'>
+        <p className='text-2xl text-neutral-400'>No saved credentials found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
       {bookMarks.map((bookMark) => {
         const { url, icon, title } = websiteInfo(bookMark.web_url);
-        console.log('👀 ~ PasswordCards ~ url:', { url, icon, title });
         return (
           <article
             key={bookMark.id}
