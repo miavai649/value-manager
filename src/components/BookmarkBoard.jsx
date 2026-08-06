@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import NewBookmark from './NewBookmark';
 import PasswordCards from './PasswordCards';
 import SearchAndSorting from './SearchAndSorting';
 
 export default function BookmarkBoard() {
+  const [bookMarks, setBookMarks] = useState([]);
+  console.log('👀 ~ BookmarkBoard ~ bookMarks:', bookMarks);
+
   const handleAddBookMark = (newBookMark) => {
-    console.log('👀 ~ handleAddBookMark ~ newBookMark:', newBookMark);
+    setBookMarks([...bookMarks, newBookMark]);
   };
 
   return (
@@ -19,7 +23,7 @@ export default function BookmarkBoard() {
           <SearchAndSorting />
 
           {/* <!-- Password Cards Grid --> */}
-          <PasswordCards />
+          <PasswordCards bookMarks={bookMarks} />
         </div>
       </main>
     </>
