@@ -31,6 +31,7 @@ export default function NewBookmark({ onAddBookMark }) {
 
   const handleReset = () => {
     setBookMark(defaultState);
+    setErrors({});
   };
 
   const validateForm = () => {
@@ -116,7 +117,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 name='category'
                 value={bookMark.category}
                 onChange={handleChange}>
-                <option className='bg-neutral-900 text-white' value='' disabled>
+                <option className='bg-neutral-900 text-white' value=''>
                   Select category
                 </option>
                 <option className='bg-neutral-900 text-white'>Social</option>
