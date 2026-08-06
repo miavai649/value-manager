@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 export default function NewBookmark({ onAddBookMark }) {
   const defaultState = {
+    id: crypto.randomUUID(),
     web_url: '',
     favicon_color: '#3b82f6',
     category: '',
@@ -184,6 +185,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 if (validateForm()) {
                   onAddBookMark(bookMark);
                 }
+                setBookMark(defaultState);
               }}>
               Add Bookmark
             </button>
