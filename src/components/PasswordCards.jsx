@@ -5,27 +5,47 @@ export default function PasswordCards({ bookMarks }) {
 
   function websiteInfo(webUrl) {
     const urlObj = new URL(webUrl);
+    const researvedIcon = {
+      'github.com': 'GH',
+      'linkedin.com': 'LI',
+      'twitter.com': 'TW',
+      'facebook.com': 'FB',
+      'instagram.com': 'IG',
+      'youtube.com': 'YT',
+      'reddit.com': 'RD',
+      'pinterest.com': 'PT',
+      'tumblr.com': 'TB',
+      'flickr.com': 'FL',
+      'dribbble.com': 'DB',
+      'behance.net': 'BH',
+      'medium.com': 'MD',
+      'slack.com': 'SL',
+      'whatsapp.com': 'WA'
+    };
 
     const url = urlObj.host.replace('www.', '');
 
     const companyName = url.split('.')[0];
+
+    console.log(researvedIcon[urlObj.host]);
+
+    let icon = Object.keys(researvedIcon).includes(url) ? researvedIcon[url] : companyName.slice(0, 2);
     return {
       url,
-      icon: companyName.slice(0, 2),
+      icon,
       title: companyName.charAt(0).toUpperCase() + companyName.slice(1)
     };
   }
 
   function handleReveal(id) {
-    setRevealedId((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+    setRevealedId((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   }
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
       {bookMarks.map((bookMark) => {
         const { url, icon, title } = websiteInfo(bookMark.web_url);
+        console.log('👀 ~ PasswordCards ~ url:', { url, icon, title });
         return (
           <article
             key={bookMark.id}
@@ -54,7 +74,7 @@ export default function PasswordCards({ bookMarks }) {
                 <dd className='flex items-center gap-2 text-neutral-50'>
                   {revealedId.includes(bookMark.id) ? <span>{bookMark.password}</span> : <span>••••••••</span>}
 
-                  <button onClick={()=>handleReveal(bookMark.id)} className='text-xs font-semibold text-blue-400'>
+                  <button onClick={() => handleReveal(bookMark.id)} className='text-xs font-semibold text-blue-400'>
                     Reveal
                   </button>
                 </dd>

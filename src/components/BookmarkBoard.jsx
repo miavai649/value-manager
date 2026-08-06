@@ -5,7 +5,6 @@ import SearchAndSorting from './SearchAndSorting';
 
 export default function BookmarkBoard() {
   const [bookMarks, setBookMarks] = useState([]);
-  console.log('👀 ~ BookmarkBoard ~ bookMarks:', bookMarks);
 
   const handleAddBookMark = (newBookMark) => {
     setBookMarks([...bookMarks, newBookMark]);
