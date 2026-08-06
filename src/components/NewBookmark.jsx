@@ -10,6 +10,7 @@ export default function NewBookmark({ onAddBookMark }) {
   };
 
   const [bookMark, setBookMark] = useState(defaultState);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -19,10 +20,43 @@ export default function NewBookmark({ onAddBookMark }) {
       ...bookMark,
       [name]: value
     });
+
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleReset = () => {
     setBookMark(defaultState);
+  };
+
+  const validateForm = () => {
+    const localErrors = {};
+    if (!bookMark.web_url) {
+      localErrors.web_url = 'Website URL is required.';
+    } else if (!/^https?:\/\/.+\..+/.test(bookMark.web_url)) {
+      localErrors.web_url = 'Please enter a valid URL';
+    }
+
+    if (!bookMark.category) {
+      localErrors.category = 'Category is required.';
+    }
+
+    if (!bookMark.user_name) {
+      localErrors.user_name = 'Username is required.';
+    }
+
+    if (!bookMark.password) {
+      localErrors.password = 'Password is required.';
+    } else if (bookMark.password.length < 6) {
+      localErrors.password = 'Password must be at least 6 characters long.';
+    }
+
+    setErrors(localErrors);
+    return Object.keys(localErrors).length === 0;
   };
 
   return (
@@ -48,6 +82,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
               <span className='text-xs text-neutral-500'>Include https:// for best results.</span>
+              {errors.web_url && <span className='text-xs text-red-500'>{errors.web_url}</span>}
             </label>
 
             {/* <!-- Color Picker --> */}
@@ -81,7 +116,9 @@ export default function NewBookmark({ onAddBookMark }) {
                 name='category'
                 value={bookMark.category}
                 onChange={handleChange}>
-                <option className='bg-neutral-900 text-white'>Select category</option>
+                <option className='bg-neutral-900 text-white' value='' disabled>
+                  Select category
+                </option>
                 <option className='bg-neutral-900 text-white'>Social</option>
                 <option className='bg-neutral-900 text-white'>Video</option>
                 <option className='bg-neutral-900 text-white'>Design</option>
@@ -92,6 +129,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 <option className='bg-neutral-900 text-white'>Music</option>
               </select>
               <span className='text-xs text-neutral-500'>Helps you filter quicker later.</span>
+              {errors.category && <span className='text-xs text-red-500'>{errors.category}</span>}
             </label>
           </div>
 
@@ -108,6 +146,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
               <span className='text-xs text-neutral-500'>Use workspace or personal handle.</span>
+              {errors.user_name && <span className='text-xs text-red-500'>{errors.user_name}</span>}
             </label>
 
             {/* <!-- Password Input --> */}
@@ -122,6 +161,7 @@ export default function NewBookmark({ onAddBookMark }) {
                 className='w-full bg-transparent text-base text-white placeholder:text-neutral-500 focus:outline-none'
               />
               <span className='text-xs text-neutral-500'>Choose at least 6 characters.</span>
+              {errors.password && <span className='text-xs text-red-500'>{errors.password}</span>}
             </label>
           </div>
         </div>
@@ -137,11 +177,13 @@ export default function NewBookmark({ onAddBookMark }) {
             </button>
             <button
               type='submit'
+              className='w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 md:w-auto'
               onClick={(e) => {
                 e.preventDefault();
-                onAddBookMark(bookMark);
-              }}
-              className='w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 md:w-auto'>
+                if (validateForm()) {
+                  onAddBookMark(bookMark);
+                }
+              }}>
               Add Bookmark
             </button>
           </div>
